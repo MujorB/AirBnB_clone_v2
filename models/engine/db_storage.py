@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#/usr/bin/python3
 """ Database Storage engine """
 from os import getenv
 from sqlalchemy import create_engine
@@ -71,7 +71,8 @@ class DBStorage:
             Args:
                 obj: object to be added
         """
-        self.__session.add(obj)
+        if obj:
+            self.__session.add(obj)
 
     def save(self):
         """ Saves the transaction """
@@ -93,3 +94,9 @@ class DBStorage:
         ses_factory = sessionmaker(bind=self.__engine, expire_on_commit=False)
         Session = scoped_session(ses_factory)
         self.__session = Session()
+
+    def close(self):
+        """ 
+            removes the private session
+        """
+        self.__session.close()
